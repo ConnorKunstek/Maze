@@ -79,7 +79,7 @@ public class Controls extends JPanel implements ActionListener {
         this.add(pause);
         this.add(animate);
 
-        this.setSize(200, 600);
+        this.setSize(200, 1000);
 
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
@@ -99,7 +99,7 @@ public class Controls extends JPanel implements ActionListener {
     public void setCols(int cols) {this.cols = cols;}
 
     //Height
-    public int getHeight() {return getRows()*10;}
+    public int getHeight() {return 1000;}
 
     //width
     public int getWidth() {return this.width;}
