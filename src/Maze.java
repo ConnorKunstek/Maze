@@ -26,19 +26,49 @@ public class Maze extends JFrame implements ActionListener {
             }
         });
 
-        stats = new Stats();
+        controls.getPause().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                pause();
+            }
+        });
+
+        controls.getAnimate().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                animate();
+            }
+        });
+
+        //stats = new Stats();
     }
 
     public void draw(){
         board = new Board(controls.getRows(), controls.getCols(), 1000, 1000);
 
         c = getContentPane();
-        c.add(controls, BorderLayout.LINE_START);
-        c.add(board, BorderLayout.CENTER);
-        c.add(stats, BorderLayout.LINE_END);
+        c.setLayout(new BorderLayout());
+        c.add(controls, BorderLayout.WEST);
+        c.add(board, BorderLayout.CENTER );
+        //c.add(stats, BorderLayout.EAST);
 
+        c.setSize(1402, 1000);
         this.setSize(1402, 1000);
         this.setVisible(true);
+    }
+
+    public void pause(){
+        if(controls.getPauseFlag()){
+            //pause
+        }else{
+            //resume
+        }
+    }
+
+    public void animate(){
+        if(controls.getAnimateFlag()){
+            //animate
+        }else{
+            //do not animate
+        }
     }
 
     public void actionPerformed(ActionEvent e){}

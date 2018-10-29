@@ -15,18 +15,28 @@ public class Controls extends JPanel implements ActionListener {
 
     private int width;
 
+    private int speed;
+
     private JSlider rowSlider;
     private JSlider colSlider;
+    private JSlider speedSlider;
 
     private JLabel title;
     private JLabel rowLabel;
     private JLabel colLabel;
-    private JLabel showAnimate;
+    private JLabel speedLabel;
 
     private JButton generate;
     private JButton solve;
     private JButton pause;
     private JButton animate;
+
+    private boolean animateFlag;
+    private boolean pauseFlag;
+    private boolean generatedFlag;
+    private boolean generatingFlag;
+    private boolean solvedFlag;
+    private boolean solvingFlag;
 
     public Controls(int rows, int cols){
         super();
@@ -48,26 +58,70 @@ public class Controls extends JPanel implements ActionListener {
             }
         });
 
+        speedSlider = new JSlider(JSlider.HORIZONTAL, MIN, MAX, 60);
+        speedSlider.setValue(60);
+
+        speedSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                setSpeed(speedSlider.getValue());
+            }
+        });
+
         title = new JLabel("Maze Controls");
         title.setHorizontalAlignment(JLabel.CENTER);
         rowLabel = new JLabel("Rows: ");
         colLabel = new JLabel("Columns: ");
-        showAnimate = new JLabel("Animate: ");
+        speedLabel = new JLabel("Speed: ");
 
         generate = new JButton("Generate");
         generate.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //generate.setPreferredSize(new Dimension(getWidth()-2, getHeight()/10));
+
+        generatedFlag = false;
+        generatingFlag = false;
+
+        generate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generate();
+            }
+        });
+
         solve = new JButton("Solve");
         solve.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //solve.setPreferredSize(new Dimension(getWidth()-2, getHeight()/10));
-        pause = new JButton("Pause");
-        pause.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //pause.setPreferredSize(new Dimension(getWidth()-2, getHeight()/10));
-        animate = new JButton("Animate");
-        animate.setAlignmentX(Component.CENTER_ALIGNMENT);
-        //animate.setPreferredSize(new Dimension(getWidth()-2, getHeight()/10));
 
-        this.setLayout(new GridLayout(9, 1, 0 ,0));
+        solve.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                solve();
+            }
+        });
+
+        pause = new JButton("Unpaused");
+        pause.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        pauseFlag = false;
+
+        pause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                pause();
+            }
+        });
+
+        animate = new JButton("Animating");
+        animate.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        animateFlag = true;
+
+        animate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                animate();
+            }
+        });
+
+        this.setLayout(new GridLayout(11, 1, 0 ,0));
 
         this.add(title);
         this.add(rowLabel);
@@ -78,14 +132,88 @@ public class Controls extends JPanel implements ActionListener {
         this.add(solve);
         this.add(pause);
         this.add(animate);
+        this.add(speedLabel);
+        this.add(speedSlider);
 
         this.setSize(200, 1000);
 
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         setRows(rows);
         setCols(cols);
         setWidth(202);
+    }
+
+    public void solve(){
+        if(!isGenerated()){
+            generate();
+        }
+        if(getAnimateFlag()){
+            solve.setText("Solving...");
+            solvingFlag = true;
+            solvedFlag = false;
+        }else{
+            solved();
+        }
+    }
+
+    public void solved(){
+        solve.setText("Solve");
+        solvingFlag = false;
+        solvedFlag = true;
+    }
+
+    public void generate() {
+        if (getAnimateFlag()) {
+            generate.setText("Generating...");
+            generatingFlag = true;
+            generatedFlag = false;
+            solve.setEnabled(false);
+        }else{
+            generated();
+        }
+    }
+
+    public void generated(){
+        generate.setText("Generate");
+        generatingFlag = false;
+        generatedFlag = true;
+        solve.setEnabled(true);
+    }
+
+    public void pause(){
+        if(pauseFlag){
+            pauseFlag = false;
+        }else{
+            pauseFlag = true;
+        }
+        if(pauseFlag){
+            //pause
+            pause.setText("Paused");
+        }else{
+            //do not pause
+            pause.setText("Unpaused");
+        }
+    }
+
+    public void animate(){
+        if(animateFlag){
+            animateFlag = false;
+        }else{
+            animateFlag = true;
+        }
+        if(animateFlag){
+            //animate
+            animate.setText("Animating");
+            speedLabel.show(true);
+            speedSlider.show(true);
+
+        }else{
+            //do not animate
+            animate.setText("Not Animating");
+            speedLabel.hide();
+            speedSlider.hide();
+        }
     }
 
     //Getters and Setters///////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,6 +225,10 @@ public class Controls extends JPanel implements ActionListener {
     //Cols
     public int getCols() {return cols;}
     public void setCols(int cols) {this.cols = cols;}
+
+    //Speed
+    public int getSpeed(){return speed;}
+    public void setSpeed(int speed){this.speed = speed; }
 
     //Height
     public int getHeight() {return 1000;}
@@ -114,6 +246,12 @@ public class Controls extends JPanel implements ActionListener {
     public JButton getSolve() {return solve;}
     public JButton getGenerate() {return generate;}
 
+    public boolean getAnimateFlag(){return animateFlag;}
+    public boolean getPauseFlag(){return pauseFlag; }
+    public boolean isGenerated(){return generatedFlag;}
+    public boolean isGenerating(){return generatingFlag;}
+    public boolean isSolved(){return solvedFlag;}
+    public boolean isSolving(){return solvingFlag;}
 
     public void actionPerformed(ActionEvent e){}
 

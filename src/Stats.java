@@ -17,5 +17,7 @@ public class Stats extends JPanel{
 
         this.setVisible(true);
 
+        //this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
     }
 }

@@ -20,7 +20,7 @@ public class Board extends JPanel implements ActionListener {
 
         this.setLayout(new GridLayout(rows, cols));
 
-        //setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 
     //Getters and Setters///////////////////////////////////////////////////////////////////////////////////////////////
