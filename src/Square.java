@@ -23,10 +23,9 @@ public class Square extends JComponent {
         setBackground(Color.RED);
     }
 
-    @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.fillRect(getXpos(), getYpos(), getWidth(), getHeight());
+        g.drawRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.RED);
     }
 

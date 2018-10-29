@@ -17,6 +17,9 @@ public class Board extends JPanel implements ActionListener {
 
         grid = new Grid(rows, cols, width, height);
         grid.fillBoard(this);
+
+        this.setLayout(new GridLayout(rows, cols));
+
         //setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 

@@ -7,7 +7,7 @@ public class Grid {
     private int gridRows;
     private int gridCols;
 
-    public Grid(int gridRows, int gridCols, int panelHeight, int panelWidth){
+    public Grid(int gridRows, int gridCols, int panelWidth, int panelHeight){
         setGridRows(gridRows);
         setGridCols(gridCols);
         squares = new Square[gridRows][gridCols];

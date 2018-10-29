@@ -8,6 +8,7 @@ public class Maze extends JFrame implements ActionListener {
 
     private Board board;
     private Controls controls;
+    private Stats stats;
     private Container c;
 
     public Maze(){
@@ -19,26 +20,24 @@ public class Maze extends JFrame implements ActionListener {
     public void initialize(){
         controls = new Controls(50, 50);
 
-        controls.getRowSlider().addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
+        controls.getGenerate().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 draw();
             }
         });
-        controls.getColSlider().addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                draw();
-            }
-        });
+
+        stats = new Stats();
     }
 
     public void draw(){
-        board = new Board(controls.getRows(), controls.getCols(), controls.getCols()*10, controls.getRows()*10);
+        board = new Board(controls.getRows(), controls.getCols(), 1000, 1000);
 
         c = getContentPane();
         c.add(controls, BorderLayout.LINE_START);
-        c.add(board, BorderLayout.LINE_END);
+        c.add(board, BorderLayout.CENTER);
+        c.add(stats, BorderLayout.LINE_END);
 
-        this.setSize(controls.getWidth() + board.getWidth(), controls.getHeight());
+        this.setSize(1402, 1000);
         this.setVisible(true);
     }
 

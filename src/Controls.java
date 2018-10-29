@@ -79,11 +79,13 @@ public class Controls extends JPanel implements ActionListener {
         this.add(pause);
         this.add(animate);
 
+        this.setSize(200, 600);
+
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
         setRows(rows);
         setCols(cols);
-        setWidth(200);
+        setWidth(202);
     }
 
     //Getters and Setters///////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,6 +108,12 @@ public class Controls extends JPanel implements ActionListener {
     //Get Sliders
     public JSlider getRowSlider() {return rowSlider;}
     public JSlider getColSlider() {return colSlider;}
+
+    public JButton getAnimate() {return animate;}
+    public JButton getPause() {return pause;}
+    public JButton getSolve() {return solve;}
+    public JButton getGenerate() {return generate;}
+
 
     public void actionPerformed(ActionEvent e){}
 
