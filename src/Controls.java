@@ -13,13 +13,12 @@ public class Controls extends JPanel implements ActionListener {
     private int rows;
     private int cols;
 
-    private int height;
     private int width;
 
     private JSlider rowSlider;
     private JSlider colSlider;
 
-    public Controls(int rows, int cols, int height, int width){
+    public Controls(int rows, int cols){
         super();
         rowSlider = new JSlider(JSlider.VERTICAL, MIN, MAX, rows);
         rowSlider.setValue(rows);
@@ -46,8 +45,7 @@ public class Controls extends JPanel implements ActionListener {
 
         setRows(rows);
         setCols(cols);
-        setHeight(height);
-        setWidth(width);
+        setWidth(250);
     }
 
     //Getters and Setters///////////////////////////////////////////////////////////////////////////////////////////////
@@ -61,12 +59,11 @@ public class Controls extends JPanel implements ActionListener {
     public void setCols(int cols) {this.cols = cols;}
 
     //Height
-    public int getHeight() {return height;}
-    public void setHeight(int height) {this.height = height;}
+    public int getHeight() {return getRows()*10;}
 
-    //Width
-    public void setWidth(int width) {this.width = width;}
-    public int getWidth() {return width;}
+    //width
+    public int getWidth() {return this.width;}
+    public void setWidth(int width){this.width = width;}
 
     //Get Sliders
     public JSlider getRowSlider() {return rowSlider;}

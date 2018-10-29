@@ -11,21 +11,21 @@ public class Grid {
         setGridRows(gridRows);
         setGridCols(gridCols);
         squares = new Square[gridRows][gridCols];
-        createSquares(gridRows, gridCols,panelHeight/gridRows, panelWidth/gridCols);
+        createSquares(gridRows, gridCols,panelWidth/gridRows, panelHeight/gridCols);
     }
 
-    public void createSquares(int rows, int cols, int squareHeight, int squareWidth){
+    public void createSquares(int rows, int cols, int squareWidth, int squareHeight){
         for(int row = 0; row < rows; row++){
             for(int col = 0; col < cols; col++){
-                squares[row][col] = new Square(row * squareHeight, col * squareWidth, squareHeight, squareWidth);
+                squares[row][col] = new Square(col * squareWidth, row * squareHeight, squareWidth, squareHeight);
             }
         }
     }
 
     public void fillBoard(JPanel board){
-        for(Square[] row: squares){
-            for(Square s: row){
-                board.add(s);
+        for(int row = 0; row < gridRows; row++){
+            for(int col = 0; col < gridCols; col++){
+                board.add(squares[row][col]);
             }
         }
     }
@@ -34,7 +34,7 @@ public class Grid {
 
     //Squares
     public Square[][] getSquares() {return squares;}
-    public void setSquares(Square[][] squares) {this.squares = squares;}
+    //public void setSquares(Square[][] squares) {this.squares = squares;}
 
     //Grid Rows
     public int getGridRows() {return gridRows; }

@@ -2,9 +2,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class Square extends JButton {
+public class Square extends JComponent {
 
-    private Graphics square;
+    //private Graphics square;
     //private BufferedImage tempImage;
 
     private int xpos;
@@ -14,18 +14,20 @@ public class Square extends JButton {
 
     public Square(int xpos, int ypos, int width, int height){
 
+        setSize(width, height);
         setXpos(xpos);
         setYpos(ypos);
         setWidth(width);
         setHeight(height);
-        paint(square);
+        setVisible(true);
+        setBackground(Color.RED);
     }
 
-    public void paint(Graphics square){
-        BufferedImage tempImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-        square = tempImage.getGraphics();
-        square.setColor(Color.BLUE);
-        square.drawRect(getXpos(), getYpos(), getWidth(), getHeight());
+    @Override
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        g.fillRect(getXpos(), getYpos(), getWidth(), getHeight());
+        g.setColor(Color.RED);
     }
 
     public int getXpos() {return xpos;}
@@ -40,7 +42,7 @@ public class Square extends JButton {
     public int getWidth() {return width;}
     public void setWidth(int width) {this.width = width;}
 
-    public Graphics getSquare() {return square;}
-    public void setSquare(Graphics square) {this.square = square;}
+//    public Graphics getSquare() {return square;}
+//    public void setSquare(Graphics square) {this.square = square;}
 
 }

@@ -9,15 +9,15 @@ public class Board extends JPanel implements ActionListener {
     private int height;
     private int width;
 
-    public Board(int rows, int cols, int boardHeight, int boardWidth){
+    public Board(int rows, int cols, int width, int height){
         super();
 
-        setHeight(boardHeight);
-        setWidth(boardWidth);
+        setWidth(width);
+        setHeight(height);
 
-        grid = new Grid(rows, cols, boardHeight, boardWidth);
+        grid = new Grid(rows, cols, width, height);
         grid.fillBoard(this);
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        //setBorder(BorderFactory.createLineBorder(Color.BLACK));
     }
 
     //Getters and Setters///////////////////////////////////////////////////////////////////////////////////////////////
@@ -28,7 +28,7 @@ public class Board extends JPanel implements ActionListener {
 
     //Height
     public int getHeight() {return height;}
-    public void setHeight(int boardHeight) {this.height = height;}
+    public void setHeight(int height) {this.height = height;}
 
     //width
     public int getWidth() {return width;}

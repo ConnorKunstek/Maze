@@ -17,7 +17,7 @@ public class Maze extends JFrame implements ActionListener {
     }
 
     public void initialize(){
-        controls = new Controls(50, 50, 500, 250);
+        controls = new Controls(50, 50);
 
         controls.getRowSlider().addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
@@ -30,13 +30,13 @@ public class Maze extends JFrame implements ActionListener {
             }
         });
 
-        board = new Board(controls.getRows(), controls.getCols(), 500, 500);
+        board = new Board(controls.getRows(), controls.getCols(), controls.getCols()*10, controls.getRows()*10);
     }
 
     public void draw(){
         c = getContentPane();
-        c.add(controls, BorderLayout.WEST);
-        c.add(board, BorderLayout.EAST);
+        c.add(controls, BorderLayout.EAST);
+        c.add(board, BorderLayout.WEST);
         setSize(controls.getWidth() + board.getWidth(), controls.getHeight());
         setVisible(true);
     }
@@ -49,5 +49,4 @@ public class Maze extends JFrame implements ActionListener {
             public void windowClosing(WindowEvent e) { System.exit(0); }
         });
     }
-
 }
