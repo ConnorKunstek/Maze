@@ -12,6 +12,22 @@ public class Board extends JPanel implements ActionListener {
     public Board(int rows, int cols, int width, int height){
         super();
 
+//        int newWidth = width;
+//        for(int i = width; i > 0; i--){
+//            if(i % cols == 0){
+//                newWidth = i;
+//                i = 0;
+//            }
+//        }
+//
+//        int newHeight = height;
+//        for(int i = height; i > 0; i--){
+//            if(i % rows == 0){
+//                newHeight = i;
+//                i = 0;
+//            }
+//        }
+
         setWidth(width);
         setHeight(height);
 

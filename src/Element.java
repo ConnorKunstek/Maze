@@ -10,6 +10,8 @@ public class Element extends JPanel{
 
     private Square[][] squares;
 
+    private boolean visited;
+
     public Element(int xpos, int ypos, int width, int height){
 
         super();
@@ -19,6 +21,7 @@ public class Element extends JPanel{
         setYpos(ypos);
         setWidth(width);
         setHeight(height);
+        setVisited(false);
         this.setVisible(true);
         //this.setBackground(Color.RED);
         this.setOpaque(false);
@@ -35,7 +38,7 @@ public class Element extends JPanel{
         }
         setCorners();
         setCenter(Color.LIGHT_GRAY);
-        setWalls(Color.LIGHT_GRAY);
+        setWalls(Color.BLACK);
     }
 
     public void setWalls(Color color){
@@ -61,9 +64,14 @@ public class Element extends JPanel{
         squares[1][2].setColor(color);
         squares[2][1].setColor(color);
         squares[2][2].setColor(color);
+        squares[1][1].setType("center");
+        squares[1][2].setType("center");
+        squares[2][1].setType("center");
+        squares[2][2].setType("center");
     }
     public void setTop(Color color){
         squares[0][1].setColor(color);
+        squares[0][1].setType("top");
         squares[0][2].setColor(color);
     }
     public void setBottom(Color color){
@@ -93,5 +101,8 @@ public class Element extends JPanel{
 
     public int getWidth() {return width;}
     public void setWidth(int width) {this.width = width;}
+
+    public boolean isVisited() { return visited; }
+    public void setVisited(boolean visited) { this.visited = visited; }
 
 }

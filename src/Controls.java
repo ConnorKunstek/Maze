@@ -43,7 +43,7 @@ public class Controls extends JPanel implements ActionListener {
 
     ////////////////////////////////////////CONSTRUCTOR/////////////////////////////////////////////////////////////////
 
-    public Controls(int rows, int cols, int width, int height){
+    public Controls(int rows, int cols, int width, int height, boolean flag){
         super();
 
         //set vars
@@ -57,9 +57,7 @@ public class Controls extends JPanel implements ActionListener {
         //labels
         title = new JLabel("Maze Controls");
         title.setHorizontalAlignment(JLabel.CENTER);
-        rowLabel = new JLabel("  Rows: ");
-        colLabel = new JLabel("  Columns: ");
-        percentLabel = new JLabel("  Percent: " + Integer.toString(percent) + "%");
+        percentLabel = new JLabel("  Percent: " + percent + "%");
 
         //initialize
         initializeRowSlider();
@@ -67,8 +65,8 @@ public class Controls extends JPanel implements ActionListener {
         initializeGenerate();
         initializeSolve();
         initializePause();
-        initializeAnimate();
         initializeSpeedSlider();
+        initializeAnimate(flag);
 
         //layout
         this.setLayout(new GridLayout(12, 1, 0 ,0));
@@ -90,12 +88,21 @@ public class Controls extends JPanel implements ActionListener {
     ////////////////////////////////////////ROWSLIDER///////////////////////////////////////////////////////////////////
 
     public void initializeRowSlider(){
+
+        rowLabel = new JLabel("  Rows: " + getRows());
+
         rowSlider = new JSlider(JSlider.HORIZONTAL, MIN, MAX, rows);
-        rowSlider.setValue(rows);
+
+        rowSlider.setMinorTickSpacing(5);
+        rowSlider.setMajorTickSpacing(10);
+        rowSlider.setPaintTicks(true);
+        rowSlider.setPaintLabels(true);
+        rowSlider.setSnapToTicks(true);
 
         rowSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 setRows(rowSlider.getValue());
+                rowLabel.setText("  Rows: " + getRows());
             }
         });
     }
@@ -104,12 +111,21 @@ public class Controls extends JPanel implements ActionListener {
     ////////////////////////////////////////COLSLIDER///////////////////////////////////////////////////////////////////
 
     public void initializeColSlider(){
+
+        colLabel = new JLabel("  Columns: " + getCols());
+
         colSlider = new JSlider(JSlider.HORIZONTAL, MIN, MAX, cols);
-        colSlider.setValue(cols);
+
+        colSlider.setMinorTickSpacing(5);
+        colSlider.setMajorTickSpacing(10);
+        colSlider.setPaintTicks(true);
+        colSlider.setPaintLabels(true);
+        colSlider.setSnapToTicks(true);
 
         colSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 setCols(colSlider.getValue());
+                colLabel.setText("  Columns: " + getCols());
             }
         });
     }
@@ -124,11 +140,11 @@ public class Controls extends JPanel implements ActionListener {
         generatedFlag = false;
         generatingFlag = false;
 
-        generate.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                generateMaze();
-            }
-        });
+//        generate.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                generateMaze();
+//            }
+//        });
     }
 
     public void generateMaze() {
@@ -140,6 +156,7 @@ public class Controls extends JPanel implements ActionListener {
             generatedMaze();
         }
     }
+
 
     public void generatedMaze(){
         generate.setText("Generated");
@@ -154,11 +171,11 @@ public class Controls extends JPanel implements ActionListener {
         solve = new JButton("Solve");
         solve.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        solve.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                solveMaze();
-            }
-        });
+//        solve.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                solveMaze();
+//            }
+//        });
 
     }
 
@@ -190,11 +207,11 @@ public class Controls extends JPanel implements ActionListener {
 
         pauseFlag = false;
 
-        pause.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                pause();
-            }
-        });
+//        pause.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                pause();
+//            }
+//        });
     }
 
     public void pause(){
@@ -215,11 +232,13 @@ public class Controls extends JPanel implements ActionListener {
     ////////////////////////////////////////PAUSE///////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////ANIMATE/////////////////////////////////////////////////////////////////////
 
-    public void initializeAnimate(){
+    public void initializeAnimate(boolean flag){
         animate = new JButton("Not Animating");
         animate.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        animateFlag = false;
+        animateFlag = flag;
+
+        animate();
 
         animate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -252,17 +271,21 @@ public class Controls extends JPanel implements ActionListener {
 
     public void initializeSpeedSlider() {
 
-        speedLabel = new JLabel("  Animation Speed: ");
+        speedLabel = new JLabel("  Animation Speed: " + speed + "%");
         speedLabel.setVisible(false);
 
-        speedSlider = new JSlider(JSlider.HORIZONTAL, MIN, MAX, cols);
-        speedSlider.setValue(cols);
+        speedSlider = new JSlider(JSlider.HORIZONTAL, 25, 250, 100);
 
-        speedSlider.setVisible(false);
+        speedSlider.setMinorTickSpacing(25);
+        speedSlider.setMajorTickSpacing(75);
+        speedSlider.setPaintTicks(true);
+        speedSlider.setPaintLabels(true);
+        speedSlider.setSnapToTicks(true);
 
         speedSlider.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent e) {
                 setSpeed(speedSlider.getValue());
+                speedLabel.setText("  Animation Speed: " + speed + "%");
             }
         });
     }
@@ -312,6 +335,11 @@ public class Controls extends JPanel implements ActionListener {
     public boolean isMazeGenerating(){return generatingFlag;}
     public boolean isMazeSolved(){return solvedFlag;}
     public boolean isMazeSolving(){return solvingFlag;}
+
+    //
+    public void setIsMazeGenerating(boolean flag){
+        this.generatedFlag = flag;
+    }
 
 
     public void actionPerformed(ActionEvent e){}

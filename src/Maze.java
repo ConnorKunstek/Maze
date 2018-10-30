@@ -8,49 +8,103 @@ public class Maze extends JFrame implements ActionListener {
     private Controls controls;
     private Container c;
 
-
-    private final int STARTING_DIM = 10;
-    private final int BOARD_WIDTH = 10*STARTING_DIM;
+    private final int STARTING_DIM = 20;
     private final int CONTROLS_WIDTH = 200;
-    private final int HEIGHT = 10*STARTING_DIM;
 
     public Maze(){
         super("Maze");
         initialize();
-        drawBoard();
         addGenerateActionListener();
         addSolveActionListener();
     }
 
     public void initialize(){
-        controls = new Controls(STARTING_DIM, STARTING_DIM, CONTROLS_WIDTH, HEIGHT);
-        board = new Board(controls.getRows(), controls.getCols(), BOARD_WIDTH, HEIGHT);
+        controls = new Controls(STARTING_DIM, STARTING_DIM, CONTROLS_WIDTH, determineDim(STARTING_DIM), false);
+        board = new Board(controls.getRows(), controls.getCols(), determineDim(STARTING_DIM), determineDim(STARTING_DIM));
 
         c = getContentPane();
         c.setLayout(new BorderLayout());
         c.add(controls, BorderLayout.WEST);
         c.add(board, BorderLayout.CENTER);
 
-        this.setSize(BOARD_WIDTH+CONTROLS_WIDTH, HEIGHT);
+        this.setSize(determineDim(STARTING_DIM)+CONTROLS_WIDTH, determineDim(STARTING_DIM));
         this.setVisible(true);
     }
 
+    public int determineDim(int dim){
+        if(dim < 21){
+            return dim * 44;
+        }else {
+            if (dim < 36){
+                return dim * 28;
+            }else{
+                if(dim < 51) {
+                    return dim * 20;
+                }else{
+                    return dim * 16;
+                }
+            }
+        }
+    }
+
     public void drawBoard(){
-        board = new Board(controls.getRows(), controls.getCols(), BOARD_WIDTH, HEIGHT);
+
+        boolean flag = controls.getAnimateFlag();
+        int rows = controls.getRows();
+        int cols = controls.getCols();
+        int newWidth = determineDim(cols);
+        int newHeight = determineDim(rows);
+
+        c.removeAll();
+        controls = new Controls(rows, cols, CONTROLS_WIDTH, newHeight, flag);
+        controls.revalidate();
+        controls.repaint();
+        board = new Board(rows, cols, newWidth, newHeight);
+        board.revalidate();
+        board.repaint();
+        c.add(controls, BorderLayout.WEST);
         c.add(board, BorderLayout.CENTER);
+        this.setSize(board.getWidth()+controls.getWidth(), controls.getHeight());
     }
 
     ////////////////////////////////////////GENERATE////////////////////////////////////////////////////////////////////
 
-    public void generateMaze(){
+//    public void generateMaze(){
+//        if(controls.isMazeGenerated()){
+//            controls.getGenerate().setText("Generating...");
+//            controls.setIsMazeGenerating(true);
+//        }else {
+//            if (controls.getAnimateFlag()) {
+//                controls.getGenerate().setText("Generating...");
+//                controls.setIsMazeGenerating(true);
+//            } else {
+//                controls.getGenerate().setText("Generated");
+//            }
+//        }
+//    }
 
-    }
+//    public void generateMaze(int x, int y){
+//        Element[][] elements = board.getGrid().getElements();
+//        try{
+//            elements
+//        }catch(Exception e){
+//            return;
+//        }
+//
+//        elements.setVisited(true);
+//
+//        while()
+//
+//    }
 
     public void addGenerateActionListener(){
         controls.getGenerate().addActionListener(new ActionListener() {
+            @Override
             public void actionPerformed(ActionEvent e) {
                 drawBoard();
-                //generateMaze();
+                //generateMaze(board.getGrid().getElements(), 0,0);
+                board.getGrid().generateMaze(0, 0);
+                controls.getGenerate().setText("Generated");
             }
         });
     }
@@ -66,6 +120,11 @@ public class Maze extends JFrame implements ActionListener {
         controls.getSolve().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if(controls.isMazeGenerated()){
+                    if(controls.getAnimateFlag()) {
+                        controls.getSolve().setText("Solving...");
+                    }else{
+                        controls.getSolve().setText("Solving...");
+                    }
                     //solveMaze();
                 }else{
                     drawBoard();
