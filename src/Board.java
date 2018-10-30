@@ -15,13 +15,17 @@ public class Board extends JPanel implements ActionListener {
         setWidth(width);
         setHeight(height);
 
+        this.setSize(width, height);
+
         grid = new Grid(rows, cols, width, height);
 
-        this.setLayout(new GridLayout(rows, cols));
+        this.setLayout(new GridLayout(rows, cols, 0, 0));
 
-        grid.fillBoard(this);
-
-        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        for(Element[] row: grid.getElements()){
+            for(Element e: row){
+                this.add(e);
+            }
+        }
     }
 
     //Getters and Setters///////////////////////////////////////////////////////////////////////////////////////////////

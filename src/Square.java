@@ -4,44 +4,55 @@ import java.awt.image.BufferedImage;
 
 public class Square extends JComponent {
 
-    //private Graphics square;
-    //private BufferedImage tempImage;
-
     private int xpos;
     private int ypos;
     private int height;
     private int width;
 
+    private String type;
+    private Color color;
+
     public Square(int xpos, int ypos, int width, int height){
 
-        setSize(width, height);
+        super();
+
+        this.setSize(width, height);
         setXpos(xpos);
         setYpos(ypos);
         setWidth(width);
         setHeight(height);
-        setVisible(true);
-        setBackground(Color.RED);
+        this.setVisible(true);
+
     }
 
+    @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        g.drawRect(0, 0, getWidth(), getHeight());
-        //g.setColor(Color.RED);
+        g.setColor(getColor());
+        g.fillRect(0, 0, getWidth(), getHeight());
     }
 
+    //color
+    public void setColor(Color color){this.color = color; repaint();}
+    public Color getColor(){return this.color;}
+
+    //type
+    public String getType() {return type;}
+    public void setType(String type) {this.type = type;}
+
+    //xpos
     public int getXpos() {return xpos;}
     public void setXpos(int xpos) {this.xpos = xpos;}
 
+    //ypos
     public int getYpos() {return ypos; }
     public void setYpos(int ypos) {this.ypos = ypos; }
 
+    //height
     public int getHeight() {return height;}
     public void setHeight(int height) {this.height = height;}
 
+    //width
     public int getWidth() {return width;}
     public void setWidth(int width) {this.width = width;}
-
-//    public Graphics getSquare() {return square;}
-//    public void setSquare(Graphics square) {this.square = square;}
-
 }
