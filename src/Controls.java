@@ -62,7 +62,6 @@ public class Controls extends JPanel implements ActionListener {
         speedSlider.setValue(60);
 
         speedSlider.addChangeListener(new ChangeListener() {
-            @Override
             public void stateChanged(ChangeEvent e) {
                 setSpeed(speedSlider.getValue());
             }
@@ -70,9 +69,9 @@ public class Controls extends JPanel implements ActionListener {
 
         title = new JLabel("Maze Controls");
         title.setHorizontalAlignment(JLabel.CENTER);
-        rowLabel = new JLabel("Rows: ");
-        colLabel = new JLabel("Columns: ");
-        speedLabel = new JLabel("Speed: ");
+        rowLabel = new JLabel("  Rows: ");
+        colLabel = new JLabel("  Columns: ");
+        speedLabel = new JLabel("  Animation Speed: ");
 
         generate = new JButton("Generate");
         generate.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -81,7 +80,6 @@ public class Controls extends JPanel implements ActionListener {
         generatingFlag = false;
 
         generate.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 generate();
             }
@@ -91,7 +89,6 @@ public class Controls extends JPanel implements ActionListener {
         solve.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         solve.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 solve();
             }
@@ -103,7 +100,6 @@ public class Controls extends JPanel implements ActionListener {
         pauseFlag = false;
 
         pause.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 pause();
             }
@@ -115,7 +111,6 @@ public class Controls extends JPanel implements ActionListener {
         animateFlag = true;
 
         animate.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
                 animate();
             }
@@ -205,14 +200,13 @@ public class Controls extends JPanel implements ActionListener {
         if(animateFlag){
             //animate
             animate.setText("Animating");
-            speedLabel.show(true);
-            speedSlider.show(true);
-
+            speedLabel.setVisible(true);
+            speedSlider.setVisible(true);
         }else{
             //do not animate
             animate.setText("Not Animating");
-            speedLabel.hide();
-            speedSlider.hide();
+            speedLabel.setVisible(false);
+            speedSlider.setVisible(false);
         }
     }
 

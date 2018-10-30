@@ -26,7 +26,7 @@ public class Square extends JComponent {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         g.drawRect(0, 0, getWidth(), getHeight());
-        g.setColor(Color.RED);
+        //g.setColor(Color.RED);
     }
 
     public int getXpos() {return xpos;}

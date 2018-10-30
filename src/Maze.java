@@ -14,12 +14,48 @@ public class Maze extends JFrame implements ActionListener {
     public Maze(){
         super("Maze");
         initialize();
+        addActionListeners();
         draw();
     }
 
     public void initialize(){
         controls = new Controls(50, 50);
 
+
+
+        stats = new Stats();
+
+        c = getContentPane();
+        c.setLayout(new BorderLayout());
+        c.add(controls, BorderLayout.WEST);
+        c.add(stats, BorderLayout.AFTER_LINE_ENDS);
+
+        this.setSize(1302, 1000);
+        this.setVisible(true);
+    }
+
+    public void draw(){
+        board = new Board(controls.getRows(), controls.getCols(), 1000, 1000);
+        c.add(board, BorderLayout.CENTER);
+    }
+
+    public void pause(){
+        if(controls.getPauseFlag()){
+            //pause
+        }else{
+            //resume
+        }
+    }
+
+    public void animate(){
+        if(controls.getAnimateFlag()){
+            //animate
+        }else{
+            //do not animate
+        }
+    }
+
+    public void addActionListeners(){
         controls.getGenerate().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 draw();
@@ -37,38 +73,6 @@ public class Maze extends JFrame implements ActionListener {
                 animate();
             }
         });
-
-        //stats = new Stats();
-    }
-
-    public void draw(){
-        board = new Board(controls.getRows(), controls.getCols(), 1000, 1000);
-
-        c = getContentPane();
-        c.setLayout(new BorderLayout());
-        c.add(controls, BorderLayout.WEST);
-        c.add(board, BorderLayout.CENTER );
-        //c.add(stats, BorderLayout.EAST);
-
-        c.setSize(1402, 1000);
-        this.setSize(1402, 1000);
-        this.setVisible(true);
-    }
-
-    public void pause(){
-        if(controls.getPauseFlag()){
-            //pause
-        }else{
-            //resume
-        }
-    }
-
-    public void animate(){
-        if(controls.getAnimateFlag()){
-            //animate
-        }else{
-            //do not animate
-        }
     }
 
     public void actionPerformed(ActionEvent e){}

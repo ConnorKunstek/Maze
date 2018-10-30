@@ -1,23 +1,31 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class Stats extends JPanel{
 
-    private JLabel percent;
+    private JLabel percentLabel;
+
+    private int percent;
 
     public Stats(){
         super();
-        percent = new JLabel("Percent: 0.0%");
 
-        this.add(percent);
+        percent = 0;
 
-        this.setLayout(new GridLayout(1, 1));
+        percentLabel = new JLabel("     Percent: " + Integer.toString(percent) + "%     ");
+
+        percentLabel.setHorizontalAlignment(JLabel.CENTER);
+
+        this.add(percentLabel);
+
+        this.setLayout(new GridLayout(1, 1, 5, 0));
 
         this.setSize(200, 1000);
 
         this.setVisible(true);
 
-        //this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        this.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
     }
 }

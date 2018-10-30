@@ -17,7 +17,7 @@ public class Grid {
     public void createSquares(int rows, int cols, int squareWidth, int squareHeight){
         for(int row = 0; row < rows; row++){
             for(int col = 0; col < cols; col++){
-                squares[row][col] = new Square(col * squareWidth, row * squareHeight, squareWidth-2, squareHeight-2);
+                squares[row][col] = new Square(col * squareWidth, row * squareHeight, squareWidth, squareHeight);
             }
         }
     }
