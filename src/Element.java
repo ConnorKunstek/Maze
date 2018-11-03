@@ -12,6 +12,14 @@ public class Element extends JPanel{
 
     private boolean visited;
 
+    private boolean top;
+    private boolean bottom;
+    private boolean left;
+    private boolean right;
+
+    private boolean start;
+    private boolean end;
+
     public Element(int row, int col, int width, int height){
 
         super();
@@ -40,10 +48,10 @@ public class Element extends JPanel{
     }
 
     public void setWalls(Color color){
-        setTop(color);
-        setBottom(color);
-        setLeft(color);
-        setRight(color);
+        setTop(color, false);
+        setBottom(color, false);
+        setLeft(color, false);
+        setRight(color, false);
     }
 
     public void setCorners() {
@@ -67,23 +75,57 @@ public class Element extends JPanel{
         squares[2][1].setType("center");
         squares[2][2].setType("center");
     }
-    public void setTop(Color color){
+    public void setTop(Color color, boolean open){
         squares[0][1].setColor(color);
-        squares[0][1].setType("top");
         squares[0][2].setColor(color);
-        squares[0][2].setType("top");
+
+        top = open;
     }
-    public void setBottom(Color color){
+    public void setBottom(Color color, boolean open){
         squares[3][1].setColor(color);
         squares[3][2].setColor(color);
+
+        bottom = open;
     }
-    public void setLeft(Color color){
+    public void setLeft(Color color, boolean open){
         squares[1][0].setColor(color);
         squares[2][0].setColor(color);
+
+        left = open;
     }
-    public void setRight(Color color){
+    public void setRight(Color color, boolean open){
         squares[1][3].setColor(color);
         squares[2][3].setColor(color);
+
+        right = open;
+    }
+
+    public void setStart(boolean var){
+        if(var) {
+            setCenter(Color.GREEN);
+            start = true;
+        }else{
+            setCenter(Color.LIGHT_GRAY);
+            start = false;
+        }
+    }
+
+//    public boolean getStart(){
+//        return this.start;
+//    }
+
+    public void setEnd(boolean var){
+        if(var) {
+            setCenter(Color.RED);
+            end = true;
+        }else{
+            setCenter(Color.LIGHT_GRAY);
+            end = false;
+        }
+    }
+
+    public boolean getEnd(){
+        return this.end;
     }
 
     public Square[][] getSquares(){return this.squares;}
@@ -103,5 +145,10 @@ public class Element extends JPanel{
 
     public boolean isVisited() { return visited; }
     public void setVisited(boolean visited) { this.visited = visited; }
+
+    public boolean getTop(){return this.top;}
+    public boolean getBottom(){return this.bottom;}
+    public boolean getLeft(){return this.left;}
+    public boolean getRight(){return this.right;}
 
 }

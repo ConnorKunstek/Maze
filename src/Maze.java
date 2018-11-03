@@ -31,8 +31,7 @@ public class Maze extends JFrame implements ActionListener {
         c.add(controls, BorderLayout.WEST);
         c.add(board, BorderLayout.CENTER);
 
-        //this.setSize(determineDim(STARTING_DIM)+CONTROLS_WIDTH, determineDim(STARTING_DIM));
-        this.setSize(this.getPreferredSize());
+        this.setSize(determineDim(STARTING_DIM)+CONTROLS_WIDTH, determineDim(STARTING_DIM));
         this.setVisible(true);
     }
 
@@ -72,6 +71,7 @@ public class Maze extends JFrame implements ActionListener {
         this.setSize(board.getWidth()+controls.getWidth(), controls.getHeight());
 
         addGenerateActionListener();
+        addSolveActionListener();
     }
 
     ////////////////////////////////////////GENERATE////////////////////////////////////////////////////////////////////
@@ -94,8 +94,7 @@ public class Maze extends JFrame implements ActionListener {
         controls.getGenerate().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 drawBoard();
-                //generateMaze(board.getGrid().getElements(), 0,0);
-                board.getGrid().maze(0, 0);
+                board.getGrid().generateMaze(0, 0);
                 controls.getGenerate().setText("Generated");
             }
         });
@@ -108,24 +107,14 @@ public class Maze extends JFrame implements ActionListener {
 //
 //    }
 
-//    public void addSolveActionListener(){
-//        controls.getSolve().addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                if(controls.isMazeGenerated()){
-//                    if(controls.getAnimateFlag()) {
-//                        controls.getSolve().setText("Solving...");
-//                    }else{
-//                        controls.getSolve().setText("Solving...");
-//                    }
-//                    //solveMaze();
-//                }else{
-//                    drawBoard();
-//                    //generateMaze();
-//                    //solveMaze();
-//                }
-//            }
-//        });
-//    }
+    public void addSolveActionListener(){
+        controls.getSolve().addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                board.getGrid().solveMaze(0 , 0);
+                controls.getSolve().setText("Solved");
+            }
+        });
+    }
 
     ////////////////////////////////////////SOLVE///////////////////////////////////////////////////////////////////////
 

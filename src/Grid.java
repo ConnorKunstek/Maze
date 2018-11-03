@@ -18,25 +18,135 @@ public class Grid {
         elements = new Element[rows][cols];
         createElements(rows, cols, panelWidth / cols, panelHeight / rows);
 
-        elements[0][0].setCenter(Color.GREEN);
-        elements[rows - 1][cols - 1].setCenter(Color.RED);
+        elements[0][0].setStart(true);
+        elements[rows-1][cols-1].setEnd(true);
 
         for (int i = 0; i < cols; i++) {
-            elements[0][i].setTop(Color.BLACK);
-            elements[rows - 1][i].setBottom(Color.BLACK);
+            elements[0][i].setTop(Color.BLACK, false);
+            elements[rows - 1][i].setBottom(Color.BLACK, false);
         }
         for (int i = 0; i < rows; i++){
-            elements[i][0].setLeft(Color.BLACK);
-            elements[i][cols - 1].setRight(Color.BLACK);
+            elements[i][0].setLeft(Color.BLACK, false);
+            elements[i][cols - 1].setRight(Color.BLACK, false);
         }
-
-        stack = new Stack<>();
     }
 
     public void createElements(int rows, int cols, int elementWidth, int elementHeight){
         for(int row = 0; row < rows; row++){
             for(int col = 0; col < cols; col++){
                 elements[row][col] = new Element(row, col, elementWidth, elementHeight);
+                elements[row][col].setStart(false);
+                elements[row][col].setEnd(false);
+            }
+        }
+    }
+    ////////////////////////////////////////CREATE//////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////SOLVE///////////////////////////////////////////////////////////////////////
+
+    public void solveMaze(int row, int col){
+        System.out.println("HERE");
+        stack = new Stack<>();
+        resetVisited();
+        stack.push(elements[row][col]);
+        while(stack.peek().getEnd() != true){
+            row = stack.peek().getRow();
+            col = stack.peek().getCol();
+            elements[row][col].setVisited(true);
+            elements[row][col].setCenter(Color.GREEN);
+            if(checkNeighbors(row, col)){
+                while(true){
+                    int random = ThreadLocalRandom.current().nextInt(0, 4);
+                    if(random == 0 && checkElement(row - 1, col) && elements[row][col].getTop()) {
+                        System.out.println("Pushing #0");
+                        elements[row][col].setTop(Color.GREEN, true);
+                        elements[row - 1][col].setBottom(Color.GREEN, true);
+                        stack.push(elements[row - 1][col]);
+                        break;
+                    }
+                    if(random == 1 && checkElement(row + 1, col) && elements[row][col].getBottom()) {
+                        System.out.println("Pushing #1");
+                        elements[row][col].setBottom(Color.GREEN, true);
+                        elements[row + 1][col].setTop(Color.GREEN, true);
+                        stack.push(elements[row + 1][col]);
+                        break;
+                    }
+                    if(random == 2 && checkElement(row, col - 1) && elements[row][col].getLeft()) {
+                        System.out.println("Pushing #2");
+                        elements[row][col].setLeft(Color.GREEN, true);
+                        elements[row][col - 1].setRight(Color.GREEN, true);
+                        stack.push(elements[row][col - 1]);
+                        break;
+                    }
+                    if(random == 3 && checkElement(row, col + 1) && elements[row][col].getRight()) {
+                        System.out.println("Pushing #3");
+                        elements[row][col].setRight(Color.GREEN, true);
+                        elements[row][col + 1].setLeft(Color.GREEN, true);
+                        stack.push(elements[row][col + 1]);
+                        break;
+                    }
+                }
+            }else{
+                System.out.println("Popping");
+                stack.peek().setCenter(Color.PINK);
+                if(stack.peek().getBottom()){
+                    stack.peek().setBottom(Color.PINK, false);
+                }
+                if(stack.peek().getTop()){
+                    stack.peek().setTop(Color.PINK, false);
+                }
+                if(stack.peek().getLeft()){
+                    stack.peek().setLeft(Color.PINK, false);
+                }
+                if(stack.peek().getRight()){
+                    stack.peek().setRight(Color.PINK, false);
+                }
+                stack.pop();
+            }
+        }
+    }
+
+
+    ////////////////////////////////////////SOLVE///////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////GENERATE////////////////////////////////////////////////////////////////////
+
+    public void generateMaze(int row, int col){
+        stack = new Stack<>();
+        elements[row][col].setVisited(true);
+        stack.push(elements[row][col]);
+        while(!stack.empty()){
+            row = stack.peek().getRow();
+            col = stack.peek().getCol();
+            elements[row][col].setVisited(true);
+            if(checkNeighbors(row, col)){
+                while(true){
+                    int random = ThreadLocalRandom.current().nextInt(0, 4);
+                    if(random == 0 && checkElement(row - 1, col)) {
+                        elements[row][col].setTop(Color.LIGHT_GRAY, true);
+                        elements[row - 1][col].setBottom(Color.LIGHT_GRAY, true);
+                        stack.push(elements[row - 1][col]);
+                        break;
+                    }
+                    if(random == 1 && checkElement(row + 1, col)) {
+                        elements[row][col].setBottom(Color.LIGHT_GRAY, true);
+                        elements[row + 1][col].setTop(Color.LIGHT_GRAY, true);
+                        stack.push(elements[row + 1][col]);
+                        break;
+                    }
+                    if(random == 2 && checkElement(row, col - 1)) {
+                        elements[row][col].setLeft(Color.LIGHT_GRAY, true);
+                        elements[row][col - 1].setRight(Color.LIGHT_GRAY, true);
+                        stack.push(elements[row][col - 1]);
+                        break;
+                    }
+                    if(random == 3 && checkElement(row, col + 1)) {
+                        elements[row][col].setRight(Color.LIGHT_GRAY, true);
+                        elements[row][col + 1].setLeft(Color.LIGHT_GRAY, true);
+                        stack.push(elements[row][col + 1]);
+                        break;
+                    }
+                }
+            }else{
+                stack.pop();
             }
         }
     }
@@ -83,69 +193,19 @@ public class Grid {
         }
         return returnVar;
     }
+    ////////////////////////////////////////GENERATE////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////OTHER///////////////////////////////////////////////////////////////////////
 
-    public void mazee(int row, int col){
-        elements[row][col].setBottom(Color.LIGHT_GRAY);
-        elements[row+1][col].setTop(Color.LIGHT_GRAY);
-    }
-
-
-    public void maze(int row, int col){
-        elements[row][col].setVisited(true);
-        stack.push(elements[row][col]);
-        while(!stack.empty()){
-            row = stack.peek().getRow();
-            col = stack.peek().getCol();
-            elements[row][col].setVisited(true);
-            if(checkNeighbors(row, col)){
-                while(true){
-                    int random = ThreadLocalRandom.current().nextInt(0, 4);
-                    if(random == 0 && checkElement(row - 1, col)) {
-                        System.out.println(row-1);
-                        System.out.println(col);
-                        elements[row][col].setTop(Color.LIGHT_GRAY);
-                        elements[row - 1][col].setBottom(Color.LIGHT_GRAY);
-                        stack.push(elements[row - 1][col]);
-                        System.out.println("pushing #0");
-                        break;
-                    }
-                    if(random == 1 && checkElement(row + 1, col)) {
-                        System.out.println(row+1);
-                        System.out.println(col);
-                        elements[row][col].setBottom(Color.LIGHT_GRAY);
-                        elements[row + 1][col].setTop(Color.LIGHT_GRAY);
-                        stack.push(elements[row + 1][col]);
-                        System.out.println("pushing #1");
-                        break;
-                    }
-                    if(random == 2 && checkElement(row, col - 1)) {
-                        System.out.println(row);
-                        System.out.println(col-1);
-                        elements[row][col].setLeft(Color.LIGHT_GRAY);
-                        elements[row][col - 1].setRight(Color.LIGHT_GRAY);
-                        stack.push(elements[row][col - 1]);
-                        System.out.println("pushing #2");
-                        break;
-                    }
-                    if(random == 3 && checkElement(row, col + 1)) {
-                        System.out.println(row);
-                        System.out.println(col+1);
-                        elements[row][col].setRight(Color.LIGHT_GRAY);
-                        elements[row][col + 1].setLeft(Color.LIGHT_GRAY);
-                        stack.push(elements[row][col + 1]);
-                        System.out.println("pushing #3");
-                        break;
-                    }
-                }
-            }else{
-                System.out.println("popping");
-                stack.pop();
+    public void resetVisited(){
+        for(Element[] tempRow: elements){
+            for(Element e: tempRow){
+                e.setVisited(false);
             }
         }
     }
 
-
-    //Getters and Setters///////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////OTHER///////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////GETTERS AND SETTERS/////////////////////////////////////////////////////////
 
     //Elements
     public Element[][] getElements() {return elements;}
