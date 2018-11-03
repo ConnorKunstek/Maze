@@ -136,34 +136,6 @@ public class Controls extends JPanel implements ActionListener {
     public void initializeGenerate(){
 
         generate = new JButton("Generate");
-        generate.setHorizontalAlignment(JButton.CENTER);
-
-        generatedFlag = false;
-        generatingFlag = false;
-
-        generate.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                generateMaze();
-            }
-        });
-    }
-
-    public void generateMaze() {
-        if(getAnimateFlag()) {
-            generate.setText("Generating...");
-            generatingFlag = true;
-            generatedFlag = false;
-            generatedMaze();
-        }else{
-            generatedMaze();
-        }
-    }
-
-
-    public void generatedMaze(){
-        generate.setText("Generated");
-        generatingFlag = false;
-        generatedFlag = true;
     }
 
     ////////////////////////////////////////GENERATE////////////////////////////////////////////////////////////////////
@@ -171,34 +143,6 @@ public class Controls extends JPanel implements ActionListener {
 
     public void initializeSolve(){
         solve = new JButton("Solve");
-        solve.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        solve.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                solveMaze();
-            }
-        });
-
-    }
-
-    public void solveMaze(){
-        if(!isMazeGenerated()){
-            generateMaze();
-        }
-        if(getAnimateFlag()){
-            solve.setText("Solving...");
-            solvingFlag = true;
-            solvedFlag = false;
-            solvedMaze();
-        }else{
-            solvedMaze();
-        }
-    }
-
-    public void solvedMaze(){
-        solve.setText("Solved");
-        solvingFlag = false;
-        solvedFlag = true;
     }
 
     ////////////////////////////////////////SOLVE///////////////////////////////////////////////////////////////////////
@@ -236,10 +180,12 @@ public class Controls extends JPanel implements ActionListener {
     ////////////////////////////////////////ANIMATE/////////////////////////////////////////////////////////////////////
 
     public void initializeAnimate(boolean flag){
-        animate = new JButton("Not Animating");
+        animate = new JButton("Animating");
         animate.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         animateFlag = flag;
+
+        animate();
 
         animate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -297,7 +243,8 @@ public class Controls extends JPanel implements ActionListener {
     public void updatePercent(double counted){
 
         double total = rows * cols;
-        double percent = counted / total;
+        double percent = (counted / total) * 100;
+        percent = Math.floor(percent * 100) / 100;
 
         percentLabel.setText("  Percent Visited: " + percent + "%");
         this.repaint();
@@ -312,11 +259,9 @@ public class Controls extends JPanel implements ActionListener {
     public void setCols(int cols) {this.cols = cols;}
 
     //Speed
-    public int getSpeed(){return this.speed;}
     public void setSpeed(int speed){this.speed = speed; }
 
     //percent
-    public double getPercent(){return this.percent;}
     public void setPercent(double percent){this.percent = percent;repaint();}
 
     //Height
@@ -327,29 +272,12 @@ public class Controls extends JPanel implements ActionListener {
     public int getWidth() {return this.width;}
     public void setWidth(int width){this.width = width;}
 
-    //Get Sliders
-    public JSlider getRowSlider() {return this.rowSlider;}
-    public JSlider getColSlider() {return this.colSlider;}
-    public JSlider getSpeedSlider(){return this.speedSlider;}
-
     //Get JButtons
-    public JButton getAnimate() {return this.animate;}
-    public JButton getPause() {return this.pause;}
     public JButton getSolve() {return this.solve;}
     public JButton getGenerate() {return this.generate;}
 
-    //Get Flags
+    //Get Flag
     public boolean getAnimateFlag(){return animateFlag;}
-    public boolean getPauseFlag(){return pauseFlag; }
-    public boolean isMazeGenerated(){return generatedFlag;}
-    public boolean isMazeGenerating(){return generatingFlag;}
-    public boolean isMazeSolved(){return solvedFlag;}
-    public boolean isMazeSolving(){return solvingFlag;}
-
-    //
-    public void setIsMazeGenerating(boolean flag){
-        this.generatedFlag = flag;
-    }
 
     public void actionPerformed(ActionEvent e){}
 }

@@ -17,7 +17,6 @@ public class Element extends JPanel{
     private boolean left;
     private boolean right;
 
-    private boolean start;
     private boolean end;
 
     public Element(int row, int col, int width, int height){
@@ -38,7 +37,7 @@ public class Element extends JPanel{
 
         for(int tempRow = 0; tempRow < 4; tempRow++){
             for(int tempCol = 0; tempCol < 4; tempCol++){
-                squares[tempRow][tempCol] = new Square(tempRow, tempCol, width/4, height/4);
+                squares[tempRow][tempCol] = new Square(width/4, height/4);
                 this.add(squares[tempRow][tempCol]);
             }
         }
@@ -67,10 +66,6 @@ public class Element extends JPanel{
         squares[0][3].setColor(Color.BLACK);
         squares[3][0].setColor(Color.BLACK);
         squares[3][3].setColor(Color.BLACK);
-        squares[0][0].setType("corner");
-        squares[0][3].setType("corner");
-        squares[3][0].setType("corner");
-        squares[3][3].setType("corner");
     }
 
     public void setCenter(Color color){
@@ -78,11 +73,8 @@ public class Element extends JPanel{
         squares[1][2].setColor(color);
         squares[2][1].setColor(color);
         squares[2][2].setColor(color);
-        squares[1][1].setType("center");
-        squares[1][2].setType("center");
-        squares[2][1].setType("center");
-        squares[2][2].setType("center");
     }
+
     public void setTop(Color color, boolean open){
         squares[0][1].setColor(color);
         squares[0][2].setColor(color);
@@ -111,10 +103,8 @@ public class Element extends JPanel{
     public void setStart(boolean var){
         if(var) {
             setCenter(Color.GREEN);
-            start = true;
         }else{
             setCenter(Color.LIGHT_GRAY);
-            start = false;
         }
     }
 
@@ -131,9 +121,6 @@ public class Element extends JPanel{
     public boolean getEnd(){
         return this.end;
     }
-
-    public Square[][] getSquares(){return this.squares;}
-    public Square getSquare(int row, int col){return squares[row][col];}
 
     public int getRow() {return row;}
     public void setRow(int row) {this.row =row;}

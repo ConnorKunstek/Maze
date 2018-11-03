@@ -12,13 +12,11 @@ public class Square extends JComponent {
     private String type;
     private Color color;
 
-    public Square(int xpos, int ypos, int width, int height){
+    public Square(int width, int height){
 
         super();
 
         this.setSize(width, height);
-        setXpos(xpos);
-        setYpos(ypos);
         setWidth(width);
         setHeight(height);
         this.setVisible(true);
@@ -35,18 +33,6 @@ public class Square extends JComponent {
     //color
     public void setColor(Color color){this.color = color; repaint();}
     public Color getColor(){return this.color;}
-
-    //type
-    public String getType() {return type;}
-    public void setType(String type) {this.type = type;}
-
-    //xpos
-    public int getXpos() {return xpos;}
-    public void setXpos(int xpos) {this.xpos = xpos;}
-
-    //ypos
-    public int getYpos() {return ypos; }
-    public void setYpos(int ypos) {this.ypos = ypos; }
 
     //height
     public int getHeight() {return height;}

@@ -122,6 +122,9 @@ public class Grid {
     ////////////////////////////////////////GENERATE////////////////////////////////////////////////////////////////////
 
     public void generateMaze(int row, int col){
+
+
+        resetVisited();
         generated = true;
         stack = new Stack<>();
         elements[row][col].setVisited(true);
@@ -231,17 +234,17 @@ public class Grid {
 
     //Elements
     public Element[][] getElements() {return elements;}
-    //public void setElements(Element[][] elements) {this.elements = elements;}
 
     //Grid Rows
-    public int getRows() {return this.rows; }
     public void setRows(int rows) {this.rows = rows; }
 
     //Grid Cols
-    public int getCols() {return this.cols; }
     public void setCols(int cols) {this.cols = cols; }
 
     //counter
     public double getCounter(){return this.counter;}
+
+    //generated
+    public boolean getGenerated(){return this.generated;}
 
 }
