@@ -8,22 +8,26 @@ public class Maze extends JFrame implements ActionListener {
     private Board board;
     private Controls controls;
 
-
     private Container c;
 
     //Global values
-    private final int STARTING_DIM = 10;
+    private final int STARTING_DIM = 20;
     private final int CONTROLS_WIDTH = 200;
+
+    //timing
+    private ActionListener timerListener;
+    private Timer timer;
+    private int secondsPassed;
 
     public Maze(){
         super("Maze");
         initialize();
         addGenerateActionListener();
-//        addSolveActionListener();
+        addSolveActionListener();
     }
 
     public void initialize(){
-        controls = new Controls(STARTING_DIM, STARTING_DIM, CONTROLS_WIDTH, determineDim(STARTING_DIM), false);
+        controls = new Controls(STARTING_DIM, STARTING_DIM, CONTROLS_WIDTH, determineDim(STARTING_DIM), true);
         board = new Board(controls.getRows(), controls.getCols(), determineDim(STARTING_DIM), determineDim(STARTING_DIM));
 
         c = getContentPane();
@@ -33,6 +37,14 @@ public class Maze extends JFrame implements ActionListener {
 
         this.setSize(determineDim(STARTING_DIM)+CONTROLS_WIDTH, determineDim(STARTING_DIM));
         this.setVisible(true);
+
+
+        timerListener = new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                secondsPassed++;
+            }
+        };
+        timer = new Timer(controls.getSpeed(), timerListener);
     }
 
     public int determineDim(int dim){
@@ -76,26 +88,11 @@ public class Maze extends JFrame implements ActionListener {
 
     ////////////////////////////////////////GENERATE////////////////////////////////////////////////////////////////////
 
-//    public void generateMaze(){
-//        if(controls.isMazeGenerated()){
-//            controls.getGenerate().setText("Generating...");
-//            controls.setIsMazeGenerating(true);
-//        }else {
-//            if (controls.getAnimateFlag()) {
-//                controls.getGenerate().setText("Generating...");
-//                controls.setIsMazeGenerating(true);
-//            } else {
-//                controls.getGenerate().setText("Generated");
-//            }
-//        }
-//    }
-
     public void addGenerateActionListener(){
         controls.getGenerate().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 drawBoard();
                 board.getGrid().generateMaze(0, 0);
-                controls.getGenerate().setText("Generated");
             }
         });
     }
@@ -103,14 +100,11 @@ public class Maze extends JFrame implements ActionListener {
     ////////////////////////////////////////GENERATE////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////SOLVE///////////////////////////////////////////////////////////////////////
 
-//    public void solveMaze(){
-//
-//    }
-
     public void addSolveActionListener(){
         controls.getSolve().addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 board.getGrid().solveMaze(0 , 0);
+                controls.updatePercent(board.getGrid().getCounter());
                 controls.getSolve().setText("Solved");
             }
         });

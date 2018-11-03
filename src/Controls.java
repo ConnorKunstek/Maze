@@ -17,7 +17,7 @@ public class Controls extends JPanel implements ActionListener {
     private int height;
 
     private int speed;
-    private int percent;
+    private double percent;
 
     private JSlider rowSlider;
     private JSlider colSlider;
@@ -57,7 +57,7 @@ public class Controls extends JPanel implements ActionListener {
         //labels
         title = new JLabel("Maze Controls");
         title.setHorizontalAlignment(JLabel.CENTER);
-        percentLabel = new JLabel("  Percent: " + percent + "%");
+        percentLabel = new JLabel("  Percent Visited: " + percent + "%");
 
         //initialize
         initializeRowSlider();
@@ -82,8 +82,8 @@ public class Controls extends JPanel implements ActionListener {
         this.add(speedLabel);
         this.add(speedSlider);
         this.add(percentLabel);
-        // this.setSize(getWidth(), getHeight());
-        this.setSize(this.getPreferredSize());
+        this.setSize(getWidth(), getHeight());
+        //this.setSize(this.getPreferredSize());
     }
     ////////////////////////////////////////CONSTRUCTOR/////////////////////////////////////////////////////////////////
     ////////////////////////////////////////ROWSLIDER///////////////////////////////////////////////////////////////////
@@ -141,11 +141,11 @@ public class Controls extends JPanel implements ActionListener {
         generatedFlag = false;
         generatingFlag = false;
 
-//        generate.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                generateMaze();
-//            }
-//        });
+        generate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                generateMaze();
+            }
+        });
     }
 
     public void generateMaze() {
@@ -153,6 +153,7 @@ public class Controls extends JPanel implements ActionListener {
             generate.setText("Generating...");
             generatingFlag = true;
             generatedFlag = false;
+            generatedMaze();
         }else{
             generatedMaze();
         }
@@ -172,11 +173,11 @@ public class Controls extends JPanel implements ActionListener {
         solve = new JButton("Solve");
         solve.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-//        solve.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                solveMaze();
-//            }
-//        });
+        solve.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                solveMaze();
+            }
+        });
 
     }
 
@@ -188,6 +189,7 @@ public class Controls extends JPanel implements ActionListener {
             solve.setText("Solving...");
             solvingFlag = true;
             solvedFlag = false;
+            solvedMaze();
         }else{
             solvedMaze();
         }
@@ -208,11 +210,11 @@ public class Controls extends JPanel implements ActionListener {
 
         pauseFlag = false;
 
-//        pause.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                pause();
-//            }
-//        });
+        pause.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                pause();
+            }
+        });
     }
 
     public void pause(){
@@ -238,8 +240,6 @@ public class Controls extends JPanel implements ActionListener {
         animate.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         animateFlag = flag;
-
-        //animate();
 
         animate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -294,6 +294,15 @@ public class Controls extends JPanel implements ActionListener {
     ////////////////////////////////////////SPEEDSLIDER/////////////////////////////////////////////////////////////////
     ////////////////////////////////////////GETTERS AND SETTERS/////////////////////////////////////////////////////////
 
+    public void updatePercent(double counted){
+
+        double total = rows * cols;
+        double percent = counted / total;
+
+        percentLabel.setText("  Percent Visited: " + percent + "%");
+        this.repaint();
+    }
+
     //Rows
     public int getRows() {return this.rows;}
     public void setRows(int rows) {this.rows = rows;}
@@ -307,8 +316,8 @@ public class Controls extends JPanel implements ActionListener {
     public void setSpeed(int speed){this.speed = speed; }
 
     //percent
-    public int getPercent(){return this.percent;}
-    public void setPercent(int percent){this.percent = percent;repaint();}
+    public double getPercent(){return this.percent;}
+    public void setPercent(double percent){this.percent = percent;repaint();}
 
     //Height
     public int getHeight() {return this.height;}

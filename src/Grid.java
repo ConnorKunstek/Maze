@@ -11,7 +11,13 @@ public class Grid {
     private int rows;
     private int cols;
 
+    private boolean generated;
+
+    private double counter;
+
     public Grid(int gridRows, int gridCols, int panelWidth, int panelHeight) {
+
+        generated = false;
 
         setRows(gridRows);
         setCols(gridCols);
@@ -44,7 +50,13 @@ public class Grid {
     ////////////////////////////////////////SOLVE///////////////////////////////////////////////////////////////////////
 
     public void solveMaze(int row, int col){
-        System.out.println("HERE");
+
+        if(!generated){
+            generateMaze(row, col);
+        }
+
+        counter = 1;
+
         stack = new Stack<>();
         resetVisited();
         stack.push(elements[row][col]);
@@ -57,36 +69,35 @@ public class Grid {
                 while(true){
                     int random = ThreadLocalRandom.current().nextInt(0, 4);
                     if(random == 0 && checkElement(row - 1, col) && elements[row][col].getTop()) {
-                        System.out.println("Pushing #0");
                         elements[row][col].setTop(Color.GREEN, true);
                         elements[row - 1][col].setBottom(Color.GREEN, true);
                         stack.push(elements[row - 1][col]);
+                        counter++;
                         break;
                     }
                     if(random == 1 && checkElement(row + 1, col) && elements[row][col].getBottom()) {
-                        System.out.println("Pushing #1");
                         elements[row][col].setBottom(Color.GREEN, true);
                         elements[row + 1][col].setTop(Color.GREEN, true);
                         stack.push(elements[row + 1][col]);
+                        counter++;
                         break;
                     }
                     if(random == 2 && checkElement(row, col - 1) && elements[row][col].getLeft()) {
-                        System.out.println("Pushing #2");
                         elements[row][col].setLeft(Color.GREEN, true);
                         elements[row][col - 1].setRight(Color.GREEN, true);
                         stack.push(elements[row][col - 1]);
+                        counter++;
                         break;
                     }
                     if(random == 3 && checkElement(row, col + 1) && elements[row][col].getRight()) {
-                        System.out.println("Pushing #3");
                         elements[row][col].setRight(Color.GREEN, true);
                         elements[row][col + 1].setLeft(Color.GREEN, true);
                         stack.push(elements[row][col + 1]);
+                        counter++;
                         break;
                     }
                 }
             }else{
-                System.out.println("Popping");
                 stack.peek().setCenter(Color.PINK);
                 if(stack.peek().getBottom()){
                     stack.peek().setBottom(Color.PINK, false);
@@ -103,6 +114,7 @@ public class Grid {
                 stack.pop();
             }
         }
+        repaint();
     }
 
 
@@ -110,6 +122,7 @@ public class Grid {
     ////////////////////////////////////////GENERATE////////////////////////////////////////////////////////////////////
 
     public void generateMaze(int row, int col){
+        generated = true;
         stack = new Stack<>();
         elements[row][col].setVisited(true);
         stack.push(elements[row][col]);
@@ -149,6 +162,7 @@ public class Grid {
                 stack.pop();
             }
         }
+        repaint();
     }
 
     //returns true if there is at least 1 un-visited, in-bounds neighbor
@@ -204,6 +218,14 @@ public class Grid {
         }
     }
 
+    public void repaint(){
+        for(Element[] tempRow: elements){
+            for(Element e: tempRow){
+                e.repaintAll();
+            }
+        }
+    }
+
     ////////////////////////////////////////OTHER///////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////GETTERS AND SETTERS/////////////////////////////////////////////////////////
 
@@ -218,5 +240,8 @@ public class Grid {
     //Grid Cols
     public int getCols() {return this.cols; }
     public void setCols(int cols) {this.cols = cols; }
+
+    //counter
+    public double getCounter(){return this.counter;}
 
 }

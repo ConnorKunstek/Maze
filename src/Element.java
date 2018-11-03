@@ -47,6 +47,14 @@ public class Element extends JPanel{
         setWalls(Color.BLACK);
     }
 
+    public void repaintAll(){
+        for(Square[] row: squares){
+            for(Square s: row){
+                repaint();
+            }
+        }
+    }
+
     public void setWalls(Color color){
         setTop(color, false);
         setBottom(color, false);
@@ -109,10 +117,6 @@ public class Element extends JPanel{
             start = false;
         }
     }
-
-//    public boolean getStart(){
-//        return this.start;
-//    }
 
     public void setEnd(boolean var){
         if(var) {
