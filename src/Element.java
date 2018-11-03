@@ -3,8 +3,8 @@ import java.awt.*;
 
 public class Element extends JPanel{
 
-    private int xpos;
-    private int ypos;
+    private int row;
+    private int col;
     private int height;
     private int width;
 
@@ -12,28 +12,26 @@ public class Element extends JPanel{
 
     private boolean visited;
 
-    public Element(int xpos, int ypos, int width, int height){
+    public Element(int row, int col, int width, int height){
 
         super();
 
-        this.setSize(width, height);
-        setXpos(xpos);
-        setYpos(ypos);
+        this.setSize(this.getPreferredSize());
+        setRow(row);
+        setCol(col);
         setWidth(width);
         setHeight(height);
         setVisited(false);
         this.setVisible(true);
-        //this.setBackground(Color.RED);
-        this.setOpaque(false);
 
         this.setLayout(new GridLayout(4,4,0,0));
 
         squares = new Square[4][4];
 
-        for(int row = 0; row < 4; row++){
-            for(int col = 0; col < 4; col++){
-                squares[row][col] = new Square(row, col, width/4, height/4);
-                this.add(squares[row][col]);
+        for(int tempRow = 0; tempRow < 4; tempRow++){
+            for(int tempCol = 0; tempCol < 4; tempCol++){
+                squares[tempRow][tempCol] = new Square(tempRow, tempCol, width/4, height/4);
+                this.add(squares[tempRow][tempCol]);
             }
         }
         setCorners();
@@ -73,6 +71,7 @@ public class Element extends JPanel{
         squares[0][1].setColor(color);
         squares[0][1].setType("top");
         squares[0][2].setColor(color);
+        squares[0][2].setType("top");
     }
     public void setBottom(Color color){
         squares[3][1].setColor(color);
@@ -90,11 +89,11 @@ public class Element extends JPanel{
     public Square[][] getSquares(){return this.squares;}
     public Square getSquare(int row, int col){return squares[row][col];}
 
-    public int getXpos() {return xpos;}
-    public void setXpos(int xpos) {this.xpos = xpos;}
+    public int getRow() {return row;}
+    public void setRow(int row) {this.row =row;}
 
-    public int getYpos() {return ypos; }
-    public void setYpos(int ypos) {this.ypos = ypos; }
+    public int getCol() {return col; }
+    public void setCol(int col) {this.col = col; }
 
     public int getHeight() {return height;}
     public void setHeight(int height) {this.height = height;}

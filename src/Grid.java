@@ -12,10 +12,11 @@ public class Grid {
     private int cols;
 
     public Grid(int gridRows, int gridCols, int panelWidth, int panelHeight) {
+
         setRows(gridRows);
         setCols(gridCols);
-        elements = new Element[gridRows][gridCols];
-        createElements(gridRows, gridCols, panelWidth / gridCols, panelHeight / gridRows);
+        elements = new Element[rows][cols];
+        createElements(rows, cols, panelWidth / cols, panelHeight / rows);
 
         elements[0][0].setCenter(Color.GREEN);
         elements[rows - 1][cols - 1].setCenter(Color.RED);
@@ -29,175 +30,120 @@ public class Grid {
             elements[i][cols - 1].setRight(Color.BLACK);
         }
 
-        stack = new Stack<Element>();
+        stack = new Stack<>();
     }
 
     public void createElements(int rows, int cols, int elementWidth, int elementHeight){
         for(int row = 0; row < rows; row++){
             for(int col = 0; col < cols; col++){
-                elements[row][col] = new Element(col * elementWidth, row * elementHeight, elementWidth, elementHeight);
+                elements[row][col] = new Element(row, col, elementWidth, elementHeight);
             }
         }
     }
 
-    public boolean checkBounds(boolean x, int num, boolean flag){
+    //returns true if there is at least 1 un-visited, in-bounds neighbor
+    public boolean checkNeighbors(int row, int col){
 
-        if(x){
-            if(num < 0 || num > cols-1){
-                flag = false;
-            }
-        }else{
-            if(num < 0 || num > rows-1){
-                flag = false;
+        if(row - 1 >= 0){
+            if(!elements[row-1][col].isVisited()){
+                return true;
             }
         }
-        return flag;
+        if(row + 1 < rows){
+            if(!elements[row+1][col].isVisited()){
+                return true;
+            }
+        }
+        if(col - 1 >= 0){
+            if(!elements[row][col-1].isVisited()){
+                return true;
+            }
+        }
+        if(col + 1 < cols){
+            if(!elements[row][col+1].isVisited()){
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void generateMaze(int x, int y){
-        stack.push(elements[x][y]);
-        while(true){
-            if(checkBounds(true, x, true) &&  checkBounds(false, y, true)) {
-                if (elements[x][y].isVisited()) {
-                    if (stack.empty()) {
-                        break;
-                    } else {
-                        stack.pop();
-                    }
-                } else {
-                    x = stack.peek().getX();
-                    y = stack.peek().getY();
-                    elements[x][y].setVisited(true);
-                    elements[x][y].setCenter(Color.BLUE);
-                    stack.push(elements[x][y]);
+    //returns true if given element is un-visited and in-bounds
+    public boolean checkElement(int row, int col){
+        boolean returnVar = false;
+        boolean inBounds = true;
+
+        if(row < 0 || row > rows-1){
+            inBounds = false;
+        }
+        if(col < 0 || col > cols-1){
+            inBounds = false;
+        }
+        if(inBounds){
+            returnVar = !elements[row][col].isVisited();
+        }
+        return returnVar;
+    }
+
+    public void mazee(int row, int col){
+        elements[row][col].setBottom(Color.LIGHT_GRAY);
+        elements[row+1][col].setTop(Color.LIGHT_GRAY);
+    }
+
+
+    public void maze(int row, int col){
+        elements[row][col].setVisited(true);
+        stack.push(elements[row][col]);
+        while(!stack.empty()){
+            row = stack.peek().getRow();
+            col = stack.peek().getCol();
+            elements[row][col].setVisited(true);
+            if(checkNeighbors(row, col)){
+                while(true){
                     int random = ThreadLocalRandom.current().nextInt(0, 4);
-                    if (random == 0) {
-                        x--;
+                    if(random == 0 && checkElement(row - 1, col)) {
+                        System.out.println(row-1);
+                        System.out.println(col);
+                        elements[row][col].setTop(Color.LIGHT_GRAY);
+                        elements[row - 1][col].setBottom(Color.LIGHT_GRAY);
+                        stack.push(elements[row - 1][col]);
+                        System.out.println("pushing #0");
+                        break;
                     }
-                    if (random == 1) {
-                        x++;
+                    if(random == 1 && checkElement(row + 1, col)) {
+                        System.out.println(row+1);
+                        System.out.println(col);
+                        elements[row][col].setBottom(Color.LIGHT_GRAY);
+                        elements[row + 1][col].setTop(Color.LIGHT_GRAY);
+                        stack.push(elements[row + 1][col]);
+                        System.out.println("pushing #1");
+                        break;
                     }
-                    if (random == 2) {
-                        y--;
+                    if(random == 2 && checkElement(row, col - 1)) {
+                        System.out.println(row);
+                        System.out.println(col-1);
+                        elements[row][col].setLeft(Color.LIGHT_GRAY);
+                        elements[row][col - 1].setRight(Color.LIGHT_GRAY);
+                        stack.push(elements[row][col - 1]);
+                        System.out.println("pushing #2");
+                        break;
                     }
-                    if (random == 3) {
-                        y++;
+                    if(random == 3 && checkElement(row, col + 1)) {
+                        System.out.println(row);
+                        System.out.println(col+1);
+                        elements[row][col].setRight(Color.LIGHT_GRAY);
+                        elements[row][col + 1].setLeft(Color.LIGHT_GRAY);
+                        stack.push(elements[row][col + 1]);
+                        System.out.println("pushing #3");
+                        break;
                     }
                 }
             }else{
-                //out of bounds
+                System.out.println("popping");
+                stack.pop();
             }
         }
     }
 
-
-//    public void generateMaze(int x, int y){
-//
-//        if(elements[x][y].isVisited()){
-//            stack.pop();
-//        }else{
-//            stack.push(elements[x][y]);
-//            elements[x][y].setVisited(true);
-//            elements[x][y].setCenter(Color.BLUE);
-//            while(true) {
-//                int random = ThreadLocalRandom.current().nextInt(0, 4);
-//                if (random == 0) {
-//                    try {
-//                        if(elements[x - 1][y].isVisited()) {
-//                            generateMaze(x - 1, y);
-//                            break;
-//                        }
-//                    } catch (Exception ignore) {}
-//                }
-//                if (random == 1) {
-//                    try {
-//                        if(elements[x + 1][y].isVisited()) {
-//                            generateMaze(x + 1, y);
-//                            break;
-//                        }
-//                    } catch (Exception ignore) {}
-//                }
-//                if (random == 2) {
-//                    try {
-//                        if(elements[x][y - 1].isVisited()) {
-//                            generateMaze(x, y - 1);
-//                            break;
-//                        }
-//                    } catch (Exception ignore) {}
-//                }
-//                if (random == 3) {
-//                    try {
-//                        if(elements[x][y + 1].isVisited()) {
-//                            generateMaze(x, y + 1);
-//                            break;
-//                        }
-//                    } catch (Exception ignore) {}
-//                }
-//            }
-//        }
-//
-//    }
-
-
-//    public void generateMaze(int x, int y){
-//
-//        System.out.println("x: " + x + " y: " + y);
-//
-//        elements[x][y].setVisited(true);
-//
-//        if(checkBounds(true, x)){
-//            if(checkBounds(false, y)){
-//
-//                //while(!elements[x-1][y].isVisited()||!elements[x+1][y].isVisited()||!elements[x][y-1].isVisited()||!elements[x][y+1].isVisited()){
-//
-//                    while(true){
-//
-//                        int random = ThreadLocalRandom.current().nextInt(0, 4);
-//                        if(random == 0){
-//                            if(checkBounds(true, x-1)) {
-//                                if (!elements[x - 1][y].isVisited()) {
-//                                    elements[x - 1][y].setBottom(Color.LIGHT_GRAY);
-//                                    elements[x][y].setTop(Color.LIGHT_GRAY);
-//                                    generateMaze(x - 1, y);
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        if(random == 1){
-//                            if(checkBounds(true, x+1)){
-//                                if(!elements[x+1][y].isVisited()){
-//                                    elements[x+1][y].setTop(Color.LIGHT_GRAY);
-//                                    elements[x][y].setBottom(Color.LIGHT_GRAY);
-//                                    generateMaze(x+1, y);
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        if(random == 2){
-//                            if(checkBounds(false, y-1)){
-//                                if(!elements[x][y-1].isVisited()) {
-//                                    elements[x][y - 1].setRight(Color.LIGHT_GRAY);
-//                                    elements[x][y].setLeft(Color.LIGHT_GRAY);
-//                                    generateMaze(x, y - 1);
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                        if(random == 3){
-//                            if(checkBounds(false, y+1)){
-//                                if(!elements[x][y+1].isVisited()) {
-//                                    elements[x][y + 1].setLeft(Color.LIGHT_GRAY);
-//                                    elements[x][y].setRight(Color.LIGHT_GRAY);
-//                                    generateMaze(x, y + 1);
-//                                    break;
-//                                }
-//                            }
-//                        }
-//                    }
-//                //}
-//            }
-//        }
-//    }
 
     //Getters and Setters///////////////////////////////////////////////////////////////////////////////////////////////
 

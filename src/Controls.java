@@ -82,7 +82,8 @@ public class Controls extends JPanel implements ActionListener {
         this.add(speedLabel);
         this.add(speedSlider);
         this.add(percentLabel);
-        this.setSize(getWidth(), getHeight());
+        // this.setSize(getWidth(), getHeight());
+        this.setSize(this.getPreferredSize());
     }
     ////////////////////////////////////////CONSTRUCTOR/////////////////////////////////////////////////////////////////
     ////////////////////////////////////////ROWSLIDER///////////////////////////////////////////////////////////////////
@@ -238,7 +239,7 @@ public class Controls extends JPanel implements ActionListener {
 
         animateFlag = flag;
 
-        animate();
+        //animate();
 
         animate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -340,7 +341,6 @@ public class Controls extends JPanel implements ActionListener {
     public void setIsMazeGenerating(boolean flag){
         this.generatedFlag = flag;
     }
-
 
     public void actionPerformed(ActionEvent e){}
 }
